@@ -8,6 +8,7 @@ It supports filtering by list, searching in task or reminder field, and sorting 
 (order of tasks in the app) as well as by task title, reminder date, or completion status.
 
 **Getting Started:**
+
 1. Copy your Clear database into repository directory
     - Copy file `99d3f5add8496de5e444d54418d57afb1080a8ff` from your mobile backup directory (in `~/Library/Application Support/MobileSync/Backup/[device_id]/` on Mac OS X)
         - Note that `SHA-1('AppDomain-com.realmacsoftware.clear-Library/Application Support/com.realmacsoftware.clear/BackendTasks.sqlite') = 99d3f5add8496de5e444d54418d57afb1080a8ff`
