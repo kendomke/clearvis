@@ -1,0 +1,585 @@
+<html>
+<head>
+<title>Clear Visualization</title>
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="./DataTables-1.10.0/media/css/jquery.dataTables.css">
+
+<!-- jQuery -->
+<script type="text/javascript" charset="utf8" src="./DataTables-1.10.0/media/js/jquery.js"></script>
+
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="./DataTables-1.10.0/media/js/jquery.dataTables.js"></script>
+
+<style>
+/** Styles **/
+body {
+    font-size: 95%;
+    font-family: 'Helvetica Neue';
+}
+table {
+    font-size: 95%;
+}
+.strikethrough {
+    text-decoration: line-through;
+}
+/*Color of cells and lists*/
+.callout {
+    border-left: 5px solid;
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
+    padding-left: 5px;
+}
+.info {
+    border-color: #5bc0de;
+}
+
+/** Positioning and layout **/
+div.sectioncontainer {
+    /*Do not allow different sections of search controls and data to overlap*/
+    clear: both;
+}
+div.searchcontrols {
+    /*Keep controls on left*/
+    float: left;
+}
+div.tableData {
+    /*Keep tables on right*/
+    width: 70%;
+    float: right;
+}
+#searchclear {
+    /*Fix the position of the first set of search controls.
+    Be careful about fixing the position of all search controls if supporting
+    multiple tables.*/
+    position: fixed;
+}
+
+/** Initial visibility **/
+.stats_block {
+    /*Hide statistics table initially*/
+    display: none;
+}
+</style>
+
+<script type="text/javascript" class="init">
+var fakeData = [{"tasks":[{"list":"16AEFCB7649144339520E405801484F2","task":"Go to the gym","fire_time":null,"completed":"0","prev":null,"next":"6A8526F32CFF49BDA43CC8B2D54F0448","identifier":"1A62DBE37D924D5D80D4E759AB3E1B5B","index":0},{"list":"16AEFCB7649144339520E405801484F2","task":"Buy groceries","fire_time":36000,"completed":"0","prev":"1A62DBE37D924D5D80D4E759AB3E1B5B","next":"8E473EE2A46C4F77AD9E00B3069EBF44","identifier":"6A8526F32CFF49BDA43CC8B2D54F0448","index":1},{"list":"16AEFCB7649144339520E405801484F2","task":"Mow the lawn","fire_time":null,"completed":"0","prev":"6A8526F32CFF49BDA43CC8B2D54F0448","next":"41291AF318AB4835A08906D8EAEB15B7","identifier":"8E473EE2A46C4F77AD9E00B3069EBF44","index":2},{"list":"16AEFCB7649144339520E405801484F2","task":"Get a haircut","fire_time":null,"completed":"0","prev":"8E473EE2A46C4F77AD9E00B3069EBF44","next":"12F172D7F6B840978AFF0F751F3A2E25","identifier":"41291AF318AB4835A08906D8EAEB15B7","index":3},{"list":"16AEFCB7649144339520E405801484F2","task":"Pick up dry cleaning","fire_time":117000,"completed":"0","prev":"41291AF318AB4835A08906D8EAEB15B7","next":"0B1F5CE86D0841DC9A1817AA06E57E2E","identifier":"12F172D7F6B840978AFF0F751F3A2E25","index":4},{"list":"16AEFCB7649144339520E405801484F2","task":"Buy anniversary present","fire_time":null,"completed":"0","prev":"12F172D7F6B840978AFF0F751F3A2E25","next":null,"identifier":"0B1F5CE86D0841DC9A1817AA06E57E2E","index":5},{"list":"16AEFCB7649144339520E405801484F2","task":"Reply to morning emails","fire_time":null,"completed":"1","prev":null,"next":null,"identifier":"16720FA12AD548168E75F3ABB43390D7","index":6},{"list":"68FCF53D9DC541BFBFE86BE96B4F659D","task":"Lego","fire_time":null,"completed":"0","prev":null,"next":"8C66F4E746C44A72A94FBC8B3B38313F","identifier":"C96130128DB74E3EA0D3A42DE309B0FC","index":7},{"list":"68FCF53D9DC541BFBFE86BE96B4F659D","task":"Football","fire_time":null,"completed":"0","prev":"C96130128DB74E3EA0D3A42DE309B0FC","next":"7720EBC792BA406488523C9C805BD703","identifier":"8C66F4E746C44A72A94FBC8B3B38313F","index":8},{"list":"68FCF53D9DC541BFBFE86BE96B4F659D","task":"Train set","fire_time":null,"completed":"0","prev":"8C66F4E746C44A72A94FBC8B3B38313F","next":null,"identifier":"7720EBC792BA406488523C9C805BD703","index":9},{"list":"777AF128011A47B9BF44DAB7A0B8B20D","task":"Passenger","fire_time":null,"completed":"0","prev":null,"next":"4437447534034E9385B9533845500DAF","identifier":"0D423AB2849C4CC3A5AC81AC4DE8F2B5","index":10},{"list":"777AF128011A47B9BF44DAB7A0B8B20D","task":"Mumford & Sons","fire_time":null,"completed":"0","prev":"0D423AB2849C4CC3A5AC81AC4DE8F2B5","next":"BFED8E2BFAAE4B20A74A4C3E6870569A","identifier":"4437447534034E9385B9533845500DAF","index":11},{"list":"777AF128011A47B9BF44DAB7A0B8B20D","task":"Imagine Dragons","fire_time":null,"completed":"0","prev":"4437447534034E9385B9533845500DAF","next":null,"identifier":"BFED8E2BFAAE4B20A74A4C3E6870569A","index":12},{"list":"5212D1C8319E4402A8E985A6EEA75502","task":"Book","fire_time":null,"completed":"0","prev":null,"next":"61D6AD1F00F2464588A7E3204F0B0D3A","identifier":"6BB1A037034440698FADA6D776E5B157","index":13},{"list":"5212D1C8319E4402A8E985A6EEA75502","task":"Chargers","fire_time":212400,"completed":"0","prev":"6BB1A037034440698FADA6D776E5B157","next":"F02B9B52B8364D1A93FF8A8BFF2F97F0","identifier":"61D6AD1F00F2464588A7E3204F0B0D3A","index":14},{"list":"5212D1C8319E4402A8E985A6EEA75502","task":"Laptop","fire_time":null,"completed":"0","prev":"61D6AD1F00F2464588A7E3204F0B0D3A","next":null,"identifier":"F02B9B52B8364D1A93FF8A8BFF2F97F0","index":15},{"list":"5212D1C8319E4402A8E985A6EEA75502","task":"Camera","fire_time":null,"completed":"1","prev":null,"next":"C2AE9FDE2A304F2B82786EE5B78EB0BA","identifier":"AC3F36FBC2AF4985990EF51D19F675EE","index":16},{"list":"5212D1C8319E4402A8E985A6EEA75502","task":"Pillow","fire_time":null,"completed":"1","prev":"AC3F36FBC2AF4985990EF51D19F675EE","next":null,"identifier":"C2AE9FDE2A304F2B82786EE5B78EB0BA","index":17},{"list":"717FA39580E34E4EB383FAA11F409FDD","task":"Milk","fire_time":null,"completed":"0","prev":null,"next":"6A3B88C4633E4A7D9B1148C3409574EA","identifier":"EA01E0869F804401ADB2393DB6C13585","index":18},{"list":"717FA39580E34E4EB383FAA11F409FDD","task":"Cake","fire_time":null,"completed":"0","prev":"EA01E0869F804401ADB2393DB6C13585","next":"C6D0A85A38984FC689682778D0EF60B1","identifier":"6A3B88C4633E4A7D9B1148C3409574EA","index":19},{"list":"717FA39580E34E4EB383FAA11F409FDD","task":"Pasta","fire_time":null,"completed":"0","prev":"6A3B88C4633E4A7D9B1148C3409574EA","next":null,"identifier":"C6D0A85A38984FC689682778D0EF60B1","index":20},{"list":"717FA39580E34E4EB383FAA11F409FDD","task":"Olive Oil","fire_time":null,"completed":"1","prev":null,"next":null,"identifier":"4E8214CA28A6487DB4A52489B50BAC98","index":21},{"list":"03993D3EAC98434D9379D67E5418046F","task":"The Avengers","fire_time":null,"completed":"0","prev":null,"next":"8F34C1A5CDC44F0D8CE2127496FD9B09","identifier":"220865311F794883B93209934FE24CCC","index":22},{"list":"03993D3EAC98434D9379D67E5418046F","task":"Eternal Sunshine of the Spotless Mind","fire_time":null,"completed":"0","prev":"220865311F794883B93209934FE24CCC","next":null,"identifier":"8F34C1A5CDC44F0D8CE2127496FD9B09","index":23}],"lists":[{"identifier":"16AEFCB7649144339520E405801484F2","title":"Personal List","prev":null,"numIncomplete":6,"numComplete":1,"index":0},{"identifier":"68FCF53D9DC541BFBFE86BE96B4F659D","title":"Birthday Presents to Buy","prev":"16AEFCB7649144339520E405801484F2","numIncomplete":3,"numComplete":0,"index":1},{"identifier":"777AF128011A47B9BF44DAB7A0B8B20D","title":"Recommended Music","prev":"68FCF53D9DC541BFBFE86BE96B4F659D","numIncomplete":3,"numComplete":0,"index":2},{"identifier":"5212D1C8319E4402A8E985A6EEA75502","title":"Things to Pack for Flight","prev":"777AF128011A47B9BF44DAB7A0B8B20D","numIncomplete":3,"numComplete":2,"index":3},{"identifier":"717FA39580E34E4EB383FAA11F409FDD","title":"Shopping List","prev":"5212D1C8319E4402A8E985A6EEA75502","numIncomplete":3,"numComplete":1,"index":4},{"identifier":"03993D3EAC98434D9379D67E5418046F","title":"Movies to Watch","prev":"717FA39580E34E4EB383FAA11F409FDD","numIncomplete":2,"numComplete":0,"index":5}]}];
+
+
+function obfuscate(input) {
+    // return input to prevent obfuscation, comment out to obfuscate input
+    return input;
+
+    // scramble input
+    var s = input.split('');
+    var l = s.length;
+    for (var i = 0; i < l; ++i) {
+        var j = Math.random() * l;
+        j = Math.floor(j);
+        if (i == j) {
+            continue;
+        }
+        var temp = s[j];
+        s[j] = s[i];
+        s[i] = temp;
+    }
+
+    // shift input
+    var letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    var shift = 7 + Math.floor(Math.random()*10); // shift by a random amount
+    var numLetters = 26;
+    for (var i = 0; i < l; ++i) {
+        // shift within lowercase and within uppercase
+        var offset = numLetters;
+        var charIndex = letters.indexOf(s[i]);
+        // only shift basic alphabet
+        if (charIndex == -1) {
+            continue;
+        }
+        if (charIndex < numLetters) {
+            offset = 0;
+        }
+        charIndex = ((charIndex - offset + shift) % numLetters) + offset;
+        s[i] = letters[charIndex];
+    }
+
+    return s.join('');
+};
+
+function escapeQuotes(input) {
+    var l = input.length;
+    var out = '';
+    for (var i = 0; i < l; ++i) {
+        if (input[i] == "\"") {
+            out = out.concat('&quot;');
+        } else {
+            out = out.concat(input[i]);
+        }
+    }
+    return out;
+}
+
+function permute(components, partialPermutation, allPermutations) {
+    if (components.length == 0) {
+        allPermutations.push(partialPermutation);
+        return;
+    }
+    for (var i = 0; i < components.length; ++i) {
+        var reducedComponents = new Array();
+        for (var j = 0; j < components.length; ++j) {
+            // exclude current component at index i
+            if (i != j) {
+                reducedComponents.push(components[j]);
+            }
+        }
+        var newPartialPermutation = partialPermutation + components[i];
+        permute(reducedComponents, newPartialPermutation, allPermutations);
+    }
+}
+
+function permutationsOfColorComponents(inputColor) {
+    var components = new Array();
+    components.push(inputColor.substring(0,2));
+    components.push(inputColor.substring(2,4));
+    components.push(inputColor.substring(4,6));
+
+    // Permute the color components
+    var allPermutations = new Array();
+    permute(components, '', allPermutations);
+
+    // Add hash to color string
+    var arrayOfPermutedColors = new Array();
+    allPermutations.forEach(function(rgb) {
+        arrayOfPermutedColors.push('#' + rgb);
+    });
+    return arrayOfPermutedColors;
+}
+
+function randomRGB() {
+    return 'rgb(' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ')';
+}
+
+$(document).ready(function() {
+    // store metadata for the table's lists in a dictionary of tableName (id) to data.
+    // this allows for additional tables to be created, with their own data sources of lists and tasks
+    var tableLists = new Object();
+
+    var completeChar = '*';
+    var incompleteChar = '/';
+
+    // Create list of possible colors to associate with lists
+    // These colors are borrowed from Bootstrap's callouts (http://getbootstrap.com/)
+    var possibleColors = ['#5bc0de', '#f0ad4e', '#d9534f'];
+    possibleColors.forEach(function(color) {
+        // iterate through rgb combinations
+        var trimmedColor = color.substring(1);
+        var colorPermutations = permutationsOfColorComponents(trimmedColor);
+        // add color combinations as possible colors
+        colorPermutations.forEach(function(permutation) {
+            // prevent duplicate colors (not very efficient, but maintains order)
+            var isNewColor = true;
+            for (var i = 0; i < possibleColors.length; ++i) {
+                var includedColor = possibleColors[i];
+                if (permutation == includedColor) {
+                    isNewColor = false;
+                    break;
+                }
+            };
+            if (isNewColor) {
+                possibleColors.push(permutation);
+            }
+        });
+    });
+
+    var columnsData = [
+        { data : "list",
+          "type" : "numeric",
+          render : function(data, type, row) {
+              if (type == 'display') {
+                  // iterate over sets of metadata for each table, looking for metadata set that contains 'data'
+                  // Note: this assumes that 'data' is unique and only in one set of metadata
+                  for (var tableName in tableLists) {
+                      var listMetadata = tableLists[tableName].metadata;
+                      if (listMetadata && data in listMetadata) {
+                          return '<span title="' + escapeQuotes(listMetadata[data].plain) + '">' + listMetadata[data].cipher + '</span>';
+                      }
+                  }
+                  console.error('Missing list name for identifier: ' + data);
+              } else if (type == 'sort') {
+                  // use index for sorting
+                  return row.index;
+              }
+              return data;
+          }},
+        { data : "task",
+          render : function(data, type, row) {
+              if (type == 'display') {
+                  var s = data.toString();
+                  var o = obfuscate(s);
+                  return '<span title="' + escapeQuotes(s) + '">' + o + '</span>';
+              }
+              return data;
+          }},
+        { data : "fire_time",
+            render : function(data, type, row) {
+              if (data == null) {
+                  return null;
+              }
+              if (type == 'display' || type == 'filter') {
+                  // always have reminders begin today
+                  var now = new Date();
+                  var midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+                  var d = new Date(data*1000 + midnight.getTime());
+                  return d.toLocaleString();
+              }
+              return data;
+          }},
+        { data : "completed",
+            render : function(data, type, row) {
+              if (data == 1) {
+                  return completeChar;
+              } else {
+                  if (type == 'filter') {
+                      // special value used for filtering
+                      return incompleteChar;
+                  }
+                  // by default, return null if incomplete
+                  return null;
+              }
+            }},
+        { data : "index",
+          "visible" : false,
+        },
+    ];
+
+    function createdRow(row, data, index) {
+        // add strikethrough to completed tasks
+        if (data.completed == 1) {
+            $(row).addClass('strikethrough');
+        }
+
+        // add color to first cell in row
+        var color = '#000000';
+        var tableName = this.prop('id');
+        var listMetadata = tableLists[tableName].metadata;
+        if (listMetadata == null) {
+            console.error(tableName + ' not present in tableLists');
+        }
+        if (listMetadata && data.list in listMetadata) {
+            if ('color' in listMetadata[data.list]) {
+                color = listMetadata[data.list].color;
+                // console.log('Color to use: ' + color);
+            }
+        }
+
+        $('td', row).eq(0).addClass('callout');
+        $('td', row).eq(0).attr('style', "border-left-color: " + color + ";");
+    }
+
+    function createdStatisticRow(row, data, index) {
+        // add color to first cell in row
+        var color = '#000000';
+        if ('color' in data) {
+            color = data.color;
+        }
+        $('td', row).eq(0).addClass('callout');
+        $('td', row).eq(0).attr('style', "border-left-color: " + color + ";");
+    }
+
+
+    var tableName = 'cleardata';
+    // obfuscate the list titles, keep ordered array of list identifiers, and set colors
+    tableLists[tableName] = new Object();
+    var tableList = tableLists[tableName];
+    tableList.metadata = new Object();
+    var listMetadata = tableList.metadata;
+    tableList.sortedIdentifiers = new Array();
+    var sortedSourceListIdentifiers = tableList.sortedIdentifiers;
+
+    // keep track of the metadata for lists
+    var colorIndex = 0;
+    fakeData[0].lists.forEach(function(entry) {
+        listMetadata[entry.identifier] = {'plain' : entry.title,
+                                          'cipher' : obfuscate(entry.title),
+                                          'numIncomplete' : entry.numIncomplete,
+                                          'numComplete' : entry.numComplete,
+                                          'index' : entry.index };
+
+        sortedSourceListIdentifiers.push(entry.identifier);
+    });
+
+    // create a sorted array to iterate over
+    sortedSourceListIdentifiers.sort(function indexCompare(a,b){
+        // compare lists by index
+        return listMetadata[a].index - listMetadata[b].index;
+    });
+
+    // set colors in order of sorted lists
+    for (var i = 0; i < sortedSourceListIdentifiers.length; ++i) {
+        var colorToUse = '#000000';
+        if (colorIndex < possibleColors.length) {
+            colorToUse = possibleColors[colorIndex];
+            ++colorIndex;
+        } else {
+            // create random colors if all pre-defined colors have been used
+            colorToUse = randomRGB();
+        }
+
+        listMetadata[sortedSourceListIdentifiers[i]]['color'] = colorToUse;
+    }
+
+    // Construct datatable
+    $('#cleardata').dataTable( {
+        "paging": false,
+        "dom" : "lrtip",
+        "data" : fakeData[0].tasks,
+        "columns": columnsData,
+        "createdRow": createdRow,
+    } );
+
+    // populate lists for table
+    var listMetadata = tableLists['cleardata'].metadata;
+    var sortedListIdentifiers = tableLists['cleardata'].sortedIdentifiers;
+
+    populateListsFromTable($('#cleardata'), listMetadata, sortedListIdentifiers, $('#cleardata_listNames'), 'Lists in Clear:');
+    populateHeadersAndFooters($('#cleardata'));
+    showCompleteAndIncompleteTasks('cleardata');
+
+    // create array of metadata objects to initialize statistics table
+    var listMetadataObjects = new Array();
+    for (var element in listMetadata) {
+        listMetadataObjects.push(listMetadata[element]);
+    }
+    populateStatisticsTable('cleardata_stats', listMetadataObjects);
+
+
+    function populateListsFromTable(table, sourceLists, sortedSourceListIdentifiers, listNames, title) {
+        // get visible lists
+        var visibleListIdentifiers = table.DataTable().columns(0).data().eq(0).sort().unique().toArray();
+
+        var obfuscatedHtml = new Array();
+        var togglesClass = 'list_toggles_' + table.attr('id');
+
+        /* sourceLists is a dictionary of listIdentifier to metadata.
+           because a for..in loop iterates over the properties of an object in an arbitrary order,
+           iterate using the array of sorted identifiers rather than the dictionary. */
+        // iterate over sorted lists, adding toggles for those lists that are visible
+        for (var i = 0; i < sortedSourceListIdentifiers.length; ++i) {
+            var listIdentifier = sortedSourceListIdentifiers[i];
+            if (visibleListIdentifiers.indexOf(listIdentifier) != -1) {
+                // create label and checkbox with toggling support and support for task count
+                obfuscatedHtml.push('<label for="list_toggle_' + listIdentifier + '" title="' + escapeQuotes(sourceLists[listIdentifier].plain) +
+                                    '" class="callout" style="border-left-color: ' + sourceLists[listIdentifier].color +
+                                    ';"><input class="' + togglesClass + '" type="checkbox" id="list_toggle_' + listIdentifier +
+                                    '">' + sourceLists[listIdentifier].cipher + '<span class="taskCounts_' + table.attr('id') +
+                                    '" style="visibility: hidden;">  (' + sourceLists[listIdentifier].numIncomplete +
+                                    '/' + sourceLists[listIdentifier].numComplete + ')</span></input></label>');
+            }
+        }
+        listNames.html('<b>' + title + '</b><br>' + obfuscatedHtml.join('<br>') + '<br><br>');
+
+        // after adding checkboxes to page, add event listeners
+        $('.' + togglesClass).on('change', function() {
+            // iterate over checkboxes for this table to determine which are checked
+            var selectedLists = new Array();
+            $('.' + togglesClass).each(function() {
+                if (this.checked) {
+                    var listId = this.id;
+                    var prefix = 'list_toggle_';
+                    if (listId.indexOf(prefix) == 0) {
+                        // search based on list identifier instead of list title - allows for multiple lists with same title to be filtered independently
+                        listId = listId.substr(prefix.length);
+                        selectedLists.push(listId);
+                    }
+                }
+            });
+
+            // search, based on list column, for all checked lists; use regex, don't use smart filter
+            var api = table.DataTable();
+            api.column(0).search(selectedLists.join('|'), true, false).draw();
+            console.log('Filtering lists: ' + selectedLists.join('|'));
+        });
+    }
+
+    function populateHeadersAndFooters(table) {
+        var api = table.DataTable();
+        var columnLabels = ["List", "Task", "Reminder", "Completed", "Index"];
+        for (var i = 0; i < columnLabels.length; ++i) {
+            $(api.column(i).header()).html(columnLabels[i]);
+            $(api.column(i).footer()).html(columnLabels[i]);
+        }
+    }
+
+    function showCompleteAndIncompleteTasks(tableName) {
+        // set indeterminate by default, incomplete and complete tasks
+        var checkbox = $('#completed_' + tableName);
+        checkbox.prop('indeterminate', true);
+        checkbox.prop('checked', false);
+        checkbox.data('state', 0);
+    }
+
+    function populateStatisticsTable(table, sourceData) {
+        if ($('#' + table).length) {
+            $('#' + table).dataTable( {
+                "paging": false,
+                "dom" : "lrtip",
+                data: sourceData,
+                "columns" : [
+                    { title : "List",
+                      "type" : "numeric",
+                      // use index as first column and render list name
+                      data : "index",
+                      render : function(data, type, row) {
+                          if (type == 'display') {
+                              return '<span title="' + escapeQuotes(row.plain) + '">' + row.cipher + '</span>';
+                          }
+                          return data;
+                      }},
+                    { title : "Incomplete",
+                      data : "numIncomplete" },
+                    { title : "Complete",
+                      data : "numComplete" },
+                ],
+                "createdRow" : createdStatisticRow,
+                // by default, sort by most incomplete and least complete
+                "order" : [[1, 'desc'], [2, 'asc']],
+            } );
+        }
+    }
+
+    // Add event listeners to search fields
+    $('.search').on('keyup change', function() {
+        var tableName = this.id;
+        var filterPrefix = 'filter_';
+        var reminderPrefix = 'reminder_';
+        var column = -1;
+        if (tableName.indexOf(filterPrefix) == 0) {
+            tableName = tableName.substr(filterPrefix.length);
+            column = 1;
+        } else if (tableName.indexOf(reminderPrefix) == 0) {
+            tableName = tableName.substr(reminderPrefix.length);
+            column = 2;
+        }
+        // search, based on task or reminder column
+        var api = $('#' + tableName).DataTable();
+        api.columns(column).search(this.value).draw();
+    });
+
+    // Add event listener to completed checkbox
+    $('.completed_toggle').on('change', function() {
+        var tableName = this.id;
+        var prefix = 'completed_';
+        if (tableName.indexOf(prefix) == 0) {
+            tableName = tableName.substr(prefix.length);
+
+            // Cycle completed toggling between indeterminate/checked/unchecked
+            var searchValue = ''; // show all by default
+            switch ($(this).data('state')) {
+                // indeterminate to checked
+                case 0:
+                    searchValue = completeChar;
+                    this.checked = true;
+                    this.indeterminate = false;
+                    $(this).data('state', 1);
+                    break;
+                // checked to unchecked
+                case 1:
+                    searchValue = incompleteChar;
+                    this.checked = false;
+                    this.indeterminate = false;
+                    $(this).data('state', 2);
+                    break;
+                // unchecked to checked
+                case 2:
+                    // show all
+                    this.checked = false;
+                    this.indeterminate = true;
+                    $(this).data('state', 0);
+                    break;
+                default:
+                    console.error('Invalid state for completed-toggle checkbox');
+                    break;
+            }
+
+            // Perform filtering
+            var api = $('#' + tableName).DataTable();
+            api.columns(3).search(searchValue).draw();
+        }
+    });
+
+    // Add event listener to toggle index column
+    $('.index_toggle').on('change', function() {
+        var tableName = this.id;
+        var prefix = 'index_column_';
+        if (tableName.indexOf(prefix) == 0) {
+            tableName = tableName.substr(prefix.length);
+            var api = $('#' + tableName).DataTable();
+            api.columns(4).visible(this.checked);
+        }
+    });
+
+    // Add event listener to toggle task counts
+    $('.task_counts_toggle').on('change', function() {
+        var tableName = this.id;
+        var prefix = 'task_counts_';
+        if (tableName.indexOf(prefix) == 0) {
+            tableName = tableName.substr(prefix.length);
+            var visibilityValue = 'hidden';
+            if (this.checked) {
+                visibilityValue = 'visible';
+            }
+            $('.taskCounts_' + tableName).each(function() {
+                $(this).attr('style', "visibility: " + visibilityValue + ";");
+            });
+        }
+    });
+
+    // Add event listener to toggle statistics
+    $('.statistics_toggle').on('change', function() {
+        var tableName = this.id;
+        var prefix = 'statistics_';
+        if (tableName.indexOf(prefix) == 0) {
+            tableName = tableName.substr(prefix.length);
+            var displayValue = 'none';
+            if (this.checked) {
+                displayValue = 'block';
+            }
+            $('#' + tableName + '_stats_block').attr('style', "display: " + displayValue + ";");
+        }
+    });
+} );
+</script>
+</head>
+
+
+<body>
+
+<div class="callout info"><h4>Clear Visualization</h4><p>Search your tasks</p></div>
+
+<div class="sectioncontainer">
+<div id="searchclear" class="searchControls">
+    <span id="cleardata_listNames"></span>
+    <label>Search tasks: <input type="search" class="search" id="filter_cleardata"></input></label>
+    <br />
+    <!-- Alarm clock emoji for reminders -->
+    &#x23F0;
+    <label>Search reminders: <input type="search" class="search" id="reminder_cleardata"></input></label>
+    <br />
+    <label for="completed_cleardata"><input type="checkbox" class="completed_toggle" id="completed_cleardata">Completed Tasks</input></label>
+    <br />
+    <label for="index_column_cleardata"><input type="checkbox" class="index_toggle" id="index_column_cleardata">Index Column</input></label>
+    <br />
+    <label for="task_counts_cleardata"><input type="checkbox" class="task_counts_toggle" id="task_counts_cleardata">Task Counts</input></label>
+    <br />
+    <label for="statistics_cleardata"><input type="checkbox" class="statistics_toggle" id="statistics_cleardata">Statistics</input></label>
+</div>
+<div class="tableData stats_block" id="cleardata_stats_block">
+    <table id="cleardata_stats" class="display" cellspacing="0" width="50%"></table>
+</div>
+<div class="tableData">
+    <table id="cleardata" class="display" cellspacing="0" width="100%"></table>
+</div>
+</div>
+
+</body>
+</html>
