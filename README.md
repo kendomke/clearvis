@@ -7,6 +7,9 @@ It offers read-only access to your data based on a local backup of your Clear da
 It supports filtering by list, searching in task or reminder field, and sorting by original order
 (order of tasks in the app) as well as by task title, reminder date, or completion status.
 
+**Demo:**
+- You can interact with an example visualization [here](http://kendomke.github.io/clearvis/)
+
 **Getting Started:**
 
 1. Copy your Clear database into repository directory
