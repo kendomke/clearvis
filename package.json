@@ -1,0 +1,11 @@
+{
+    "name" : "clearvis",
+    "description" : "A simple web app to visualize data from Clear, a to-do and reminders app from Realmac Software",
+    "author" : {
+        "name" : "Ken Domke",
+    },
+    "version" : "0.0.1",
+    "dependencies" : {
+        "sqlite3" : "2.2.3"
+    }
+}
